@@ -7,13 +7,13 @@ $.getJSON('/chicken', function(data) {
     };
 });
 
-$(document).on("click", "#see-recipes", function() {
+$(document).on("click", "#see-recipes", function(event) {
     $("#chicken").empty();
     
     $.ajax({
         method: "GET",
         url: "/scrape"
-    }).done(function() {
+    }).then(function() {
         location.reload();
     });
 });
