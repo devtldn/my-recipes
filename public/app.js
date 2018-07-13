@@ -8,7 +8,8 @@ $.getJSON('/chicken', function(data) {
 });
 
 $(document).on("click", "#see-recipes", function() {
-
+    $("#chicken").empty();
+    
     $.ajax({
         method: "GET",
         url: "/scrape"

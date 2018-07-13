@@ -7,13 +7,13 @@ const cheerio = require("cheerio");
 
 const db = require("./models");
 
-const app = express();
-
 const PORT = process.env.PORT || 1122;
 
 const dbURL = "mongodb://localhost/recipe";
 
 const mongconn = mongoose.connection;
+
+const app = express();
 
 if (process.env.MONGODB_URI) {
     mongoose.connect(process.env.MONGODB_URI);
@@ -35,19 +35,11 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use(express.static("public"));
 
-
-app.get("/", (req, res) => {
-    res.render("index.html");
-});
-
 app.get('/scrape', function(req, res) {
-    
     axios.get("https://www.bonappetit.com/ingredient/chicken").then(function(response) {
-
         let $ = cheerio.load(response.data);
 
         $("li.component-river-item").each(function (i, element) {
-
             let result = {};
 
             result.Image = $(element).find("img").attr("srcset").split(" ")[0];
