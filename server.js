@@ -2,7 +2,6 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const logger = require("morgan");
 const mongoose = require("mongoose");
-const request = require("request");
 const axios = require("axios");
 const cheerio = require("cheerio");
 
@@ -12,18 +11,23 @@ const app = express();
 
 const PORT = process.env.PORT || 1122;
 
-const MONGODB_URI = PORT || process.env.MONGODB_URI || "mongodb://localhost/recipe";
+const dbURL = "mongodb://localhost/recipe";
 
-mongoose.Promise = Promise;
+const mongconn = mongoose.connection;
 
 if (process.env.MONGODB_URI) {
-    mongoose.connect(MONGODB_URI);
+    mongoose.connect(process.env.MONGODB_URI);
 } else {
-    mongoose.connect("mongodb://localhost/recipe");
+    mongoose.connect(dbURL);
 }
 
+mongconn.on("error", function(err) {
+    console.log("MONGOOSE ERROR: ", err);
+});
 
-
+mongconn.once("open", function(err) {
+    console.log("MONGOOSE CONNECTED");
+});
 
 app.use(logger("dev"));
 
@@ -40,8 +44,6 @@ app.get('/scrape', function(req, res) {
     
     axios.get("https://www.bonappetit.com/ingredient/chicken").then(function(response) {
 
-    
-
         let $ = cheerio.load(response.data);
 
         $("li.component-river-item").each(function (i, element) {
@@ -55,6 +57,8 @@ app.get('/scrape', function(req, res) {
             
             db.Chicken.create(result).then(function(dbChicken) {
                 console.log(dbChicken);
+            }).catch(function(err) {
+                res.json("CREATE ERR: ", err);
             });
         });
     });

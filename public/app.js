@@ -1,30 +1,19 @@
 $.getJSON('/chicken', function(data) {
     for (let i = 0; i < data.length; i++) {
-        $("#chicken").append(`<img src='${data[i].Image}'><br>`);
+        $("#chicken").append(`<img src='${data[i].Image}'><br><br>`);
         $("#chicken").append(`<h4 class='note-this'>${data[i].Dish}</h4><br>`);
         $("#chicken").append(`<h6 class='note-this'>${data[i].Summary}</h6><br>`);
-        $("#chicken").append(`<a href='${data[i].Link}'><h6>Get Recipe</h6></a>`);
+        $("#chicken").append(`<a href='${data[i].Link}' target='_blank'><h6>Get Recipe</h6></a><br><br>`);
     };
 });
 
 $(document).on("click", "#see-recipes", function() {
-    $("#chicken").empty();
-
-    var thisId = $(this).attr("data-id");
 
     $.ajax({
         method: "GET",
         url: "/scrape"
     }).then(function() {
-        $.ajax({
-            method: "GET",
-            url: "/chicken/" + thisId
-        }).then(function(data) {
-            $("#chicken").append(`<img src='${data.Image}'><br>`);
-            $("#chicken").append(`<h4 class='note-this'>${data.Dish}</h4><br>`);
-            $("#chicken").append(`<h6 class='note-this'>${data.Summary}</h6><br>`);
-            $("#chicken").append(`<a href='${data.Link}'><h6>Get Recipe</h6></a>`);
-        });
+        location.reload();
     });
 });
 
@@ -35,7 +24,7 @@ $(document).on("click", "#see-recipes", function() {
 //         method: "GET",
 //         url: "/chicken/" + thisId
 //     }).then(function(data) {
-//         console.log(data);
+//         $(".note-this").show();
 
 //         if (data.note) {
 //             $("#noteTitle").val(data.note.title);
