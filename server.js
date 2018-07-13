@@ -11,6 +11,7 @@ const db = require("./models");
 const app = express();
 
 const PORT = 1122;
+
 const MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/recipe";
 
 mongoose.Promise = Promise;
