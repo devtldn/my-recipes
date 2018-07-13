@@ -10,12 +10,20 @@ const db = require("./models");
 
 const app = express();
 
-const PORT = 1122;
+const PORT = process.env.PORT || 1122;
 
-const MONGODB_URI = process.env.PORT || process.env.MONGODB_URI || "mongodb://localhost/recipe";
+const MONGODB_URI = PORT || process.env.MONGODB_URI || "mongodb://localhost/recipe";
 
 mongoose.Promise = Promise;
-mongoose.connect(MONGODB_URI);
+
+if (process.env.MONGODB_URI) {
+    mongoose.connect(MONGODB_URI);
+} else {
+    mongoose.connect("mongodb://localhost/recipe");
+}
+
+
+
 
 app.use(logger("dev"));
 
