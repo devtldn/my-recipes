@@ -12,7 +12,7 @@ const app = express();
 
 const PORT = 1122;
 
-const MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/recipe";
+const MONGODB_URI = process.env.PORT || process.env.MONGODB_URI || "mongodb://localhost/recipe";
 
 mongoose.Promise = Promise;
 mongoose.connect(MONGODB_URI);
