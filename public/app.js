@@ -18,16 +18,16 @@ $(document).on("click", "#see-recipes", function() {
     });
 });
 
-$(document).on("click", "p", function() {
-    var thisId = $(this).attr("data-id");
+// $(document).on("click", "p", function() {
+//     var thisId = $(this).attr("data-id");
 
-    $.ajax({
-        method: "GET",
-        url: "/chicken/" + thisId
-    }).then(function(data) {
-        $("#modal1").on('shown.bs.modal');
-    });
-});
+//     $.ajax({
+//         method: "GET",
+//         url: "/chicken/" + thisId
+//     }).then(function(data) {
+//         $("#modal1").on('shown.bs.modal');
+//     });
+// });
 
 // $(document).on("click", "#save-note", function() {
 //     var thisId = $(this).attr("data-id");
