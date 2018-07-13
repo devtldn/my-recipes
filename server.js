@@ -31,6 +31,8 @@ app.get('/scrape', function(req, res) {
     
     axios.get("https://www.bonappetit.com/ingredient/chicken").then(function(response) {
 
+    
+
         let $ = cheerio.load(response.data);
 
         $("li.component-river-item").each(function (i, element) {
@@ -62,7 +64,7 @@ app.get('/chicken/:id', function(req, res) {
         res.json(dbChicken);
     }).catch(function(err) {
         res.json(err);
-    })
+    });
 });
 
 app.post("/chicken/:id", function(req, res) {
