@@ -35,13 +35,14 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use(express.static("public"));
 
+
 app.get('/scrape', function(req, res) {
-    axios.get("https://www.bonappetit.com/ingredient/chicken").then(function(response) {
-        let $ = cheerio.load(response.data);
+    return axios.get("https://www.bonappetit.com/ingredient/chicken").then(function(response) {
+        var $ = cheerio.load(response.data);
+        
+        var result = {};
 
         $("li.component-river-item").each(function (i, element) {
-            let result = {};
-
             result.Image = $(element).find("img").attr("srcset").split(" ")[0];
             result.Dish = $(element).find("h1.feature-item-hed").text();
             result.Summary = $(element).find("p.feature-item-dek").text();
@@ -50,8 +51,10 @@ app.get('/scrape', function(req, res) {
             db.Chicken.create(result).then(function(dbChicken) {
                 console.log(dbChicken);
             }).catch(function(err) {
-                res.json("CREATE ERR: ", err);
+                res.json("CREATION ERR: ", err);
             });
+
+            res.end();
         });
     });
 });
@@ -81,7 +84,6 @@ app.post("/chicken/:id", function(req, res) {
         res.json(err);
     });
 });
-
 
 
 app.listen(PORT, function() {
